@@ -2,6 +2,8 @@
 
 A Claude Code skill that builds Instagram-style explainer carousels — the photo cover + bold statement + numbered list of real product logos + framed screenshot + comment-keyword CTA format you see all over creator feeds. Claude writes the copy, builds the HTML, and renders one 1080×1350 PNG per slide, ready to post.
 
+Give it a topic, or give it a **reel you just filmed** — hand over the video or its transcript and it builds a companion carousel from the points you actually said on camera, with the same CTA keyword, so the reel and carousel ship as a pair.
+
 Built by [Brooke Wright](https://wrightmode.com) (Wright Mode) for her own content system, then open-sourced as the *system* — templates, themes, tools, and workflow.
 
 **What's deliberately NOT in here: my brand.** No fonts, no palette, no photos, no sticker packs. The templates ship with a plain starter palette that works out of the box but looks like nobody. Before you post anything from this repo, read [MAKE-IT-YOURS.md](MAKE-IT-YOURS.md) and build your own brand kit and asset libraries. If you skip that step your carousels will look like every other person who cloned this repo — and the entire reason this format works is that it looks unmistakably like *one person's* feed.
@@ -26,15 +28,19 @@ python3 -m venv .venv
 .venv/bin/pip install playwright pillow
 .venv/bin/python -m playwright install chromium
 
-# 3. Make it yours (do NOT skip this)
-#    — edit templates/brand.css (your colours + fonts)
-#    — build your photo inventory (see MAKE-IT-YOURS.md)
-#    — fetch the logos you actually talk about:
-python3 tools/logo-fetch.py notion notion 000000
+# 3. In Claude Code, run the guided setup — the skill interviews you:
+#    your colours, fonts, handle, the tools you talk about, your photos,
+#    and (optional) connecting an OpenAI key to generate your own
+#    doodle/sticker set in YOUR palette:
+#    /explainer-carousel setup
 
-# 4. In Claude Code:
+# 4. Then build:
 #    /explainer-carousel my 5 favourite AI tools --keyword TOOLS
+#    — or from a reel you just filmed:
+#    /explainer-carousel ~/Downloads/reel-draft.mp4 --keyword TOOLS
 ```
+
+The first run refuses to ship the starter palette — setup walks you through making it yours (the manual version of the same steps is in [MAKE-IT-YOURS.md](MAKE-IT-YOURS.md)).
 
 Optional: set `OPENAI_API_KEY` in your environment if you want the sticker/doodle generation and image-edit tools.
 

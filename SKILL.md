@@ -1,18 +1,35 @@
 ---
 name: explainer-carousel
-description: Build an explainer carousel (photo cover + bold statement + numbered logo list + framed screenshot card + comment-keyword CTA) in the user's brand, defined in templates/brand.css. Real product logos from a local library, real screenshots via Playwright (AI mockup fallback). Use when the user says "explainer carousel", "logo carousel", "make a carousel with logos/screenshots", or "tools/stack carousel".
+description: Build an explainer carousel (photo cover + bold statement + numbered logo list + framed screenshot card + comment-keyword CTA) in the user's brand, defined in templates/brand.css. Works from a topic OR from a filmed reel/video (transcript-driven companion carousel). Real product logos from a local library, real screenshots via Playwright (AI mockup fallback). Use when the user says "explainer carousel", "logo carousel", "make a carousel with logos/screenshots", "tools/stack carousel", or "turn this reel/video into a carousel".
 user-invocable: true
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep, AskUserQuestion
-argument-hint: <topic or angle> [--keyword KEYWORD] [--cover photo-name] [--count N]
+argument-hint: <topic, transcript path, or video file> [--keyword KEYWORD] [--cover photo-name] [--count N]
 ---
 
 # /explainer-carousel
 
 Builds the **logo + screenshot explainer carousel** style — photo cover, numbered list of real product logos, framed app screenshots, comment-keyword CTA. Renders one 1080×1350 PNG per slide (IG 4:5 portrait).
 
-## ⚠️ First-run check
+## Two input modes
 
-If `templates/brand.css` still contains the starter palette (the file says so in its header comment) or `assets/photos/` is empty, STOP and point the user at `MAKE-IT-YOURS.md` before building anything. A carousel in the starter palette is a demo, not a deliverable.
+1. **Topic mode** — the user gives a topic/angle ("my 5 favourite AI tools"). You plan the content from scratch.
+2. **Reel mode** — the user gives a filmed reel/video (a video file, a transcript file, or pasted transcript). The carousel is a COMPANION POST to the reel: it expands the points they actually said on camera into slides, so the reel and the carousel ship as a pair. See "Reel mode" under Stage 1.
+
+## ⚠️ First run = ONBOARDING (do this before any build)
+
+If `templates/brand.css` still contains the starter palette (the header comment says so) or `assets/photos/` is empty, don't build a carousel yet — **run the guided setup below**. A carousel in the starter palette is a demo, not a deliverable. The user can also trigger this any time with "set up the carousel skill" / "/explainer-carousel setup".
+
+Interview the user step by step (use AskUserQuestion where options fit; keep it conversational — one topic at a time, not a form dump). Apply each answer immediately so setup ends with a working, branded system:
+
+1. **Colours.** Ask for their existing brand hexes, or their website/IG handle so you can look at what they already use, or offer to help pick. Map their answers to the 5 roles (`--ink --paper --accent --pop --fill` — explain each in one plain-English line) and write them into `templates/brand.css`.
+2. **Fonts.** Ask for the vibe (chunky + loud / clean + premium / soft + handmade / editorial) and any fonts they already use. Suggest 2–3 Google Fonts pairings per vibe, get a pick, then update `brand.css` AND the font-load line in `templates/explainer-carousel.html`.
+3. **Identity.** Ask for their brand name (for the two-word lockup) and @handle. Record them in a short `BRAND.md` at the repo root so future builds fill `{{BRAND_WORD_1}}/{{BRAND_WORD_2}}` and `{{HANDLE}}` without asking again. Also ask: do they use comment-keyword DM automation (ManyChat etc.)? If yes, note their real keywords in BRAND.md; if no, CTAs use a link/URL line instead.
+4. **Logos.** Ask which 10–20 tools/products they actually talk about, then fetch them: `python3 tools/logo-fetch.py <name> <slug> <hex>` (slugs at simpleicons.org). Report any that fell back to letter tiles.
+5. **Doodles/stickers (optional but high-value).** Ask if they want their own hand-drawn-style doodle set. If yes, help them connect an OpenAI API key: check `echo $OPENAI_API_KEY` first; if unset, tell them where to create one (platform.openai.com → API keys) and add `export OPENAI_API_KEY=...` to their shell profile (or the `env` block in `~/.claude/settings.json` for Claude Code). Then ask which style — flat marker doodles / cute 8-bit pixel stickers / realistic cutouts — and generate a starter set of 8–10 shapes IN THEIR PALETTE with `tools/gen-sticker.py`, naming their brand.css hexes in the prompt. Show them the results. If they skip the key, that's fine — slides work without stickers.
+6. **Photos.** Ask them to point you at 10–20 photos of themselves/their life (a Downloads dump is fine). Run `tools/import-photos.py`, then walk them through renaming + face-tagging into `assets/photos/lifestyle/PHOTO-INDEX.md` (explain WHY: the tags place text cards off their face automatically, forever).
+7. **Environment + test render.** Ensure `.venv` exists (`python3 -m venv .venv && .venv/bin/pip install playwright pillow && .venv/bin/python -m playwright install chromium`), then render `templates/explainer-carousel.html`, Read the PNGs yourself, and show them their palette live. Ask: "does this look like YOUR brand?" Iterate colours/fonts until they say yes.
+
+Steps 4–6 can be deferred ("we can do this later") but 1, 2, 3 and 7 are the minimum before the first real carousel. Point at `MAKE-IT-YOURS.md` for the deeper reasoning behind each step.
 
 ## ⚠️ ALWAYS verify your own work before showing the user
 
@@ -107,9 +124,16 @@ Write copy in the user's voice. If they have a style guide or banned-phrases lis
 ## Workflow
 
 ### Stage 1 — Parse + plan slides
-1. Take the topic/angle. Extract flags: `--keyword`, `--cover <photo-name>`, `--count`.
+1. Take the topic/angle OR the reel input. Extract flags: `--keyword`, `--cover <photo-name>`, `--count`.
 2. Decide the slide list (which types, in order). Default: Cover → Statement → 1 Logo list → 1 Screenshot card → CTA.
 3. Write the copy for each slide (word limits per type above, user's voice).
+
+**Reel mode (input is a video or transcript):**
+- **Video file** → get a transcript first. If the `whisper` CLI is installed, use it (`whisper <file> --model base --output_format txt`); otherwise extract audio (`ffmpeg -i <video> -vn audio.mp3`) and ask the user to transcribe, or ask them to paste the transcript. Never invent what was said.
+- **The FILMED transcript is the source of truth** — build slides from what they actually said, not from a pre-filming script (people rewrite themselves on camera).
+- Derive the slide plan from the transcript: the reel's hook → cover headline territory (reworded, not copied verbatim — the carousel should ADD to the reel, not repeat it); each distinct point/tool mentioned → a list row or statement slide; anything they showed on screen → a screenshot card candidate.
+- Use the SAME CTA keyword as the reel's caption so the funnel is consistent across both posts. If no keyword is given, ask — never invent one.
+- Skip the interview questions topic mode would need; the transcript already answers them. Still pause at the plan-approval step (Stage 1 step 6).
 4. For the **logo list**, map each row to a real logo file in `assets/logos/`. Missing → `tools/logo-fetch.py`.
 5. For each **screenshot card**, decide the source:
    - **Real URL** → `tools/capture-screenshot.py <url> .tmp/<name>.png` (Playwright, retina). JS-heavy / Cloudflare-walled apps will time out — use a mockup or ask the user for a real screenshot instead.
@@ -119,7 +143,7 @@ Write copy in the user's voice. If they have a style guide or banned-phrases lis
 
 ### Stage 2 — Build HTML
 1. Copy `templates/explainer-carousel.html` to `.tmp/explainer-<slug>.html`.
-2. Fill placeholders (including `{{BRAND_WORD_1}}/{{BRAND_WORD_2}}` and `{{HANDLE}}` from the user's brand). For logo lists, repeat the `.row` block per item. For screenshot cards, set `{{SHOT_IMG}}` to the captured PNG (relative path).
+2. Fill placeholders (`{{BRAND_WORD_1}}/{{BRAND_WORD_2}}` and `{{HANDLE}}` come from `BRAND.md`, written during onboarding). For logo lists, repeat the `.row` block per item. For screenshot cards, set `{{SHOT_IMG}}` to the captured PNG (relative path).
 3. Asset paths are relative: `../assets/photos/covers/<file>`.
 
 ### Stage 3 — Render to PNG
