@@ -1,0 +1,7 @@
+.venv/
+.tmp/
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store
+assets/photos/lifestyle/_staging/

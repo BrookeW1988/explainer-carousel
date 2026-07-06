@@ -1,0 +1,35 @@
+/* =====================================================================
+   BRAND KIT — this is YOUR file. Edit the values, keep the names.
+   ---------------------------------------------------------------------
+   Every template and theme in this repo reads its colours and fonts from
+   the variables below. Change the VALUES to your brand and every slide
+   type + theme restyles itself. Do not rename the variables — the theme
+   stylesheets reference them by these role names.
+
+   The defaults below are a deliberately plain starter palette so the
+   templates render fine out of the box. They are NOT a recommendation —
+   the whole point is to replace them. See MAKE-IT-YOURS.md for how to
+   pick a palette and font pairing that reads as *you*.
+   ===================================================================== */
+
+:root{
+  /* ---- colours (5 roles) ---- */
+  --ink:        #262b33;  /* near-black: text, borders, hard shadows */
+  --paper:      #f5f3ee;  /* page background (off-white / cream) */
+  --accent:     #3d5a80;  /* primary accent: statement bgs, kickers */
+  --pop:        #e3a72f;  /* loud highlight: THE word in a headline, CTA keyword box */
+  --fill:       #98c1d9;  /* soft bright fill: stickers, soft highlights */
+  --white:      #ffffff;
+  --paper-warm: #f3efe6;  /* warmer paper tint used by the scrapbook theme */
+
+  /* ---- fonts (7 roles) ----
+     Load your picks in the HTML <head> via Google Fonts, then set them here.
+     Always keep a generic fallback after your font name. */
+  --font-display:   'Archivo Black', sans-serif;      /* chunky headline / display */
+  --font-body:      'Inter', sans-serif;              /* body copy, descriptions */
+  --font-hand:      'Permanent Marker', cursive;      /* handwritten kickers, sticker text */
+  --font-round:     'Baloo 2', sans-serif;            /* rounded friendly headers (looser themes) */
+  --font-mono:      'IBM Plex Mono', monospace;       /* labels, tags, eyebrows */
+  --font-serif:     'Playfair Display', serif;        /* editorial serif (zine theme) */
+  --font-grotesque: 'Archivo', sans-serif;            /* big display name (collage theme) */
+}

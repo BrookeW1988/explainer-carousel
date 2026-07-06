@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!--
+  EXPLAINER CAROUSEL master template
+  Five reusable slide TYPES: cover / statement / logo list / screenshot card / CTA.
+  Each .slide is 1080x1350 (4:5 IG portrait). PNG export screenshots each .slide node.
+
+  BRANDING: all colours + fonts come from brand.css (linked below).
+  Edit brand.css — not this file — to make the output yours.
+  The Google Fonts line below loads the STARTER fonts; when you change the
+  font variables in brand.css, swap this line for your own font loads.
+
+  HOW IT'S USED: clone this file and fill the {{...}} placeholders.
+  {{BRAND_WORD_1}}/{{BRAND_WORD_2}} = your two-word brand lockup (or delete the .wm block).
+  {{HANDLE}} = your @handle.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;600;700&family=Inter:ital,wght@0,400;0,500;0,700;1,400;1,700&family=Permanent+Marker&family=Baloo+2:wght@500;600;700&family=IBM+Plex+Mono:wght@400;700&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand.css">
+<style>
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:#d9d4cc; font-family:var(--font-body); color:var(--ink); }
+
+  /* ---- the canvas ---- */
+  .slide{
+    position:relative; width:1080px; height:1350px; overflow:hidden;
+    background:var(--paper); display:flex; flex-direction:column;
+    padding:90px 80px; margin:0 auto 40px;
+  }
+  .display{ font-family:var(--font-display); font-weight:400; line-height:1.02; }
+  .marker { font-family:var(--font-hand); }
+
+  /* halftone dot textures (subtle detail behind blocks) */
+  .halftone-accent{ background-image:radial-gradient(circle, var(--accent) 2px, transparent 2.5px); background-size:22px 22px; }
+  .halftone-pop   { background-image:radial-gradient(circle, var(--pop) 2px, transparent 2.5px); background-size:22px 22px; }
+
+  /* offset hard-shadow boxes — the signature scrappy move */
+  .box{ border:5px solid var(--ink); box-shadow:12px 12px 0 0 var(--ink); background:var(--white); }
+  .tilt-l{ transform:rotate(-2deg); }
+  .tilt-r{ transform:rotate(2deg); }
+
+  /* ===================================================================
+     TYPE 1 — COVER  (photo + chunky headline block + sticker + sub-bar)
+     =================================================================== */
+  .cover{ padding:0; }
+  .cover .photo{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .cover .scrim{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(17,17,17,.15) 0%, rgba(17,17,17,.0) 35%, rgba(17,17,17,.55) 100%); }
+  .cover .headline-wrap{ position:absolute; top:70px; left:60px; right:60px; }
+  .cover .headline{
+    display:inline; font-family:var(--font-display); font-size:76px; line-height:1.28;
+    color:var(--paper); text-transform:uppercase;
+    background:var(--ink); box-decoration-break:clone; -webkit-box-decoration-break:clone;
+    padding:6px 16px; box-shadow:10px 10px 0 0 var(--pop);
+  }
+  .cover .headline .hl{ background:var(--pop); color:var(--paper); }
+  .cover .subbar{
+    position:absolute; bottom:230px; left:60px; right:60px;
+    background:var(--white); border:5px solid var(--ink); box-shadow:8px 8px 0 0 var(--ink);
+    padding:20px 26px; font-size:30px; font-weight:700; color:var(--ink); display:flex; align-items:center; gap:14px;
+  }
+  .cover .subbar .dot{ width:14px; height:14px; border-radius:50%; background:var(--pop); flex-shrink:0; }
+  .cover .sticker{
+    position:absolute; bottom:120px; right:70px; width:130px; height:130px;
+    background:var(--fill); border:5px solid var(--ink); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; box-shadow:8px 8px 0 0 var(--ink);
+    font-family:var(--font-hand); font-size:26px; color:var(--ink); text-align:center; transform:rotate(-8deg);
+  }
+  .cover .pagepill{ position:absolute; top:40px; right:40px; background:var(--ink); color:var(--paper); font-weight:700; font-size:24px; padding:8px 18px; border-radius:30px; }
+  .cover .swipe{ position:absolute; bottom:50px; right:70px; font-family:var(--font-hand); color:var(--paper); font-size:34px; }
+
+  /* ===================================================================
+     TYPE 2 — STATEMENT  (solid bg, big claim, one accent word)
+     =================================================================== */
+  .statement{ justify-content:center; align-items:flex-start; }
+  .statement.accent{ background:var(--accent); }
+  .statement.ink{ background:var(--ink); }
+  .statement .eyebrow{ font-family:var(--font-hand); font-size:38px; color:var(--pop); margin-bottom:24px; transform:rotate(-2deg); }
+  .statement .claim{ font-family:var(--font-display); font-size:84px; line-height:1.08; text-transform:uppercase; color:var(--paper); }
+  .statement .claim .hl{ background:var(--pop); color:var(--paper); padding:2px 14px; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
+  .statement .claim .hl-fill{ background:var(--fill); color:var(--ink); padding:2px 14px; box-decoration-break:clone; -webkit-box-decoration-break:clone; }
+  .statement .sub{ margin-top:40px; font-size:34px; line-height:1.45; color:var(--paper); max-width:88%; opacity:.92; }
+
+  /* ===================================================================
+     TYPE 3 — LOGO LIST  (numbered rows: real product logo + name + line)
+     =================================================================== */
+  .list .kicker{ font-family:var(--font-hand); font-size:40px; color:var(--accent); margin-bottom:8px; transform:rotate(-1deg); }
+  .list .title{ font-family:var(--font-display); font-size:58px; text-transform:uppercase; color:var(--ink); margin-bottom:44px; line-height:1.05; }
+  .list .rows{ display:flex; flex-direction:column; gap:22px; }
+  .list .row{
+    display:flex; align-items:center; gap:24px; background:var(--white);
+    border:4px solid var(--ink); box-shadow:7px 7px 0 0 var(--ink); padding:20px 26px;
+  }
+  .list .num{ font-family:var(--font-display); font-size:38px; color:var(--pop); width:54px; flex-shrink:0; }
+  .list .logo{ width:62px; height:62px; flex-shrink:0; display:flex; align-items:center; justify-content:center; background:var(--paper); border:3px solid var(--ink); border-radius:14px; }
+  .list .logo img{ width:40px; height:40px; object-fit:contain; }
+  .list .logo .fallback{ font-family:var(--font-display); font-size:30px; color:var(--ink); }
+  .list .rtext{ flex:1; min-width:0; }
+  .list .rname{ font-family:var(--font-display); font-size:32px; color:var(--ink); line-height:1.1; }
+  .list .rdesc{ font-size:25px; color:var(--ink); opacity:.78; line-height:1.25; margin-top:4px; }
+
+  /* ===================================================================
+     TYPE 4 — SCREENSHOT CARD  (NN / THE THING + framed browser screenshot)
+     =================================================================== */
+  .shot .kicker{ font-family:var(--font-hand); font-size:40px; color:var(--accent); margin-bottom:6px; }
+  .shot .title{ font-family:var(--font-display); font-size:62px; text-transform:uppercase; color:var(--pop); margin-bottom:18px; line-height:1.05; }
+  .shot .lede{ font-size:32px; line-height:1.4; color:var(--ink); margin-bottom:34px; }
+  .shot .lede .hl{ background:var(--fill); padding:1px 8px; font-weight:700; }
+  .browser{ border:5px solid var(--ink); box-shadow:12px 12px 0 0 var(--ink); background:var(--white); border-radius:14px 14px 10px 10px; overflow:hidden; }
+  .browser .bar{ display:flex; align-items:center; gap:10px; padding:14px 18px; background:#e8e4dc; border-bottom:4px solid var(--ink); }
+  .browser .bar .d{ width:16px; height:16px; border-radius:50%; border:2px solid var(--ink); }
+  .browser .bar .d.r{ background:#ff6058; } .browser .bar .d.y{ background:#ffbd2e; } .browser .bar .d.g{ background:#28c840; }
+  .browser .bar .url{ flex:1; margin-left:10px; background:var(--paper); border:2px solid var(--ink); border-radius:8px; padding:6px 14px; font-size:20px; color:var(--ink); opacity:.7; }
+  .browser .shotimg{ display:block; width:100%; height:auto; }
+  .shot .footnote{ margin-top:30px; font-size:30px; line-height:1.4; color:var(--ink); }
+  .shot .footnote b{ font-family:var(--font-display); font-weight:400; }
+
+  /* ===================================================================
+     TYPE 5 — CTA  (photo + COMMENT [KEYWORD] in accent box)
+     =================================================================== */
+  .cta{ padding:0; }
+  .cta .photo{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .cta .scrim{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(17,17,17,.2) 0%, rgba(17,17,17,.4) 50%, rgba(17,17,17,.78) 100%); }
+  .cta .block{ position:absolute; left:60px; right:60px; bottom:170px; text-align:center; }
+  .cta .comment{ display:inline-flex; align-items:center; gap:0; font-family:var(--font-display); font-size:72px; text-transform:uppercase; }
+  .cta .comment .word{ color:var(--paper); }
+  .cta .comment .kw{ background:var(--pop); color:var(--paper); padding:4px 22px; margin-left:18px; border:4px solid var(--paper); box-shadow:8px 8px 0 0 rgba(17,17,17,.6); }
+  .cta .line{ margin-top:34px; font-size:34px; line-height:1.4; color:var(--paper); max-width:80%; margin-left:auto; margin-right:auto; opacity:.95; }
+  .cta .handle{ position:absolute; bottom:70px; left:0; right:0; text-align:center; font-family:var(--font-body); font-weight:700; font-size:34px; color:var(--fill); }
+  .cta .wm{ position:absolute; top:50px; left:60px; }
+  .wm-logo{ display:inline-block; }
+  .wm-logo .w1{ background:var(--ink); color:var(--fill); font-family:var(--font-display); font-size:26px; padding:4px 12px; transform:rotate(-2deg); display:inline-block; }
+  .wm-logo .w2{ font-family:var(--font-display); font-size:26px; color:var(--paper); padding:4px 6px; transform:rotate(1deg); display:inline-block; }
+</style>
+</head>
+<body>
+
+<!-- ============ SLIDE 1 · COVER ============ -->
+<div class="slide cover">
+  <img class="photo" src="{{COVER_PHOTO}}" alt="">
+  <div class="scrim"></div>
+  <div class="pagepill">1/{{TOTAL}}</div>
+  <div class="headline-wrap">
+    <span class="headline">{{COVER_HEADLINE}}</span>
+  </div>
+  <div class="subbar"><span class="dot"></span>{{COVER_SUBBAR}}</div>
+  <div class="sticker">{{STICKER}}</div>
+  <div class="swipe">swipe →</div>
+</div>
+
+<!-- ============ SLIDE 2 · STATEMENT ============ -->
+<div class="slide statement accent">
+  <div class="eyebrow">{{STATE_EYEBROW}}</div>
+  <div class="claim">{{STATE_CLAIM}}</div>
+  <div class="sub">{{STATE_SUB}}</div>
+</div>
+
+<!-- ============ SLIDE 3 · LOGO LIST ============ -->
+<div class="slide list halftone-accent" style="background-color:var(--paper);">
+  <div class="kicker">{{LIST_KICKER}}</div>
+  <div class="title">{{LIST_TITLE}}</div>
+  <div class="rows">
+    <!-- repeat .row per item. .logo img src points at assets/logos/<name>.svg -->
+    <div class="row">
+      <div class="num">01</div>
+      <div class="logo"><img src="../assets/logos/notion.svg" alt=""></div>
+      <div class="rtext">
+        <div class="rname">Notion</div>
+        <div class="rdesc">{{ROW_DESC}}</div>
+      </div>
+    </div>
+    <!-- ...more rows... -->
+  </div>
+</div>
+
+<!-- ============ SLIDE 4 · SCREENSHOT CARD ============ -->
+<div class="slide shot">
+  <div class="kicker">{{SHOT_KICKER}}</div>
+  <div class="title">{{SHOT_TITLE}}</div>
+  <div class="lede">{{SHOT_LEDE}}</div>
+  <div class="browser">
+    <div class="bar"><span class="d r"></span><span class="d y"></span><span class="d g"></span><span class="url">{{SHOT_URL}}</span></div>
+    <img class="shotimg" src="{{SHOT_IMG}}" alt="">
+  </div>
+  <div class="footnote">{{SHOT_FOOTNOTE}}</div>
+</div>
+
+<!-- ============ SLIDE 5 · CTA ============ -->
+<div class="slide cta">
+  <img class="photo" src="{{CTA_PHOTO}}" alt="">
+  <div class="scrim"></div>
+  <div class="wm"><span class="wm-logo"><span class="w1">{{BRAND_WORD_1}}</span><span class="w2">{{BRAND_WORD_2}}</span></span></div>
+  <div class="block">
+    <div class="comment"><span class="word">Comment</span><span class="kw">{{KEYWORD}}</span></div>
+    <div class="line">{{CTA_LINE}}</div>
+  </div>
+  <div class="handle">{{HANDLE}}</div>
+</div>
+
+</body>
+</html>

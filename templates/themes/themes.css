@@ -1,0 +1,528 @@
+/* =====================================================================
+   EXPLAINER CAROUSEL — themes + row styles
+   ---------------------------------------------------------------------
+   Add ONE theme class to <body>:  theme-scrappy | theme-clean | theme-scrapbook
+   Each .slide is 1080x1350. Mix slide TYPES (cover/statement/list/shot/cta)
+   and ROW STYLES (logo-row / folder-row / card-row / float-row / receipt-row)
+   freely — the theme controls decoration, the row style controls layout.
+
+   ALL brand colours + fonts come from ../brand.css (imported below).
+   Edit brand.css to restyle every theme — don't hardcode values here.
+   ===================================================================== */
+@import url("../brand.css");
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{ background:#d9d4cc; font-family:var(--font-body); color:var(--ink); }
+.slide{ position:relative; width:1080px; height:1350px; overflow:hidden; display:flex; flex-direction:column; padding:90px 80px; margin:0 auto 40px; background:var(--paper); }
+.display{ font-family:var(--font-display); font-weight:400; line-height:1.02; }
+.marker{ font-family:var(--font-hand); }
+
+/* ---------------------------------------------------------------------
+   SHARED slide-type bones (themes override colours/decoration below)
+   --------------------------------------------------------------------- */
+.cover,.cta{ padding:0; }
+.cover .photo,.cta .photo{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.cover .scrim{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(17,17,17,.12) 0%, rgba(17,17,17,0) 35%, rgba(17,17,17,.55) 100%); }
+.cta .scrim{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(17,17,17,.2) 0%, rgba(17,17,17,.42) 50%, rgba(17,17,17,.78) 100%); }
+.cover .pagepill{ position:absolute; top:40px; right:40px; z-index:5; background:var(--ink); color:var(--paper); font-weight:700; font-size:24px; padding:8px 18px; border-radius:30px; }
+.cover .headline-wrap{ position:absolute; top:100px; left:60px; right:60px; }
+.cover .subbar{ position:absolute; bottom:230px; left:60px; right:60px; padding:20px 26px; font-size:30px; font-weight:700; display:flex; align-items:center; gap:14px; }
+.cover .subbar .dot{ width:14px; height:14px; border-radius:50%; background:var(--pop); flex-shrink:0; }
+.cover .sticker{ position:absolute; bottom:120px; right:70px; width:130px; height:130px; display:flex; align-items:center; justify-content:center; font-family:var(--font-hand); font-size:24px; text-align:center; line-height:1; }
+.cover .swipe{ position:absolute; bottom:50px; right:70px; font-family:var(--font-hand); color:var(--paper); font-size:34px; }
+
+.statement{ justify-content:center; align-items:flex-start; }
+.statement .eyebrow{ font-family:var(--font-hand); font-size:38px; margin-bottom:24px; transform:rotate(-2deg); }
+.statement .claim{ font-family:var(--font-display); font-size:84px; line-height:1.08; text-transform:uppercase; }
+.statement .sub{ margin-top:40px; font-size:34px; line-height:1.45; max-width:88%; opacity:.92; }
+
+/* list/shot slides centre their content vertically so it never crams an edge or floats */
+.list,.shot{ justify-content:center; }
+.list .kicker,.shot .kicker{ font-family:var(--font-hand); font-size:40px; margin-bottom:8px; transform:rotate(-1deg); }
+.list .title,.shot .title{ font-family:var(--font-display); font-size:54px; text-transform:uppercase; margin-bottom:34px; line-height:1.06; }
+.rows{ display:flex; flex-direction:column; gap:18px; }
+/* hard safety: a list with 6+ rows shrinks gaps/text so it always fits 1350 */
+.rows.dense{ gap:12px; }
+.rows.dense .rname{ font-size:27px; } .rows.dense .rdesc{ font-size:22px; } .rows.dense .row{ padding:14px 22px; }
+
+.cta .block{ position:absolute; left:60px; right:60px; bottom:170px; text-align:center; }
+.cta .comment{ display:inline-flex; align-items:center; font-family:var(--font-display); font-size:72px; text-transform:uppercase; }
+.cta .comment .word{ color:var(--paper); }
+.cta .comment .kw{ padding:4px 22px; margin-left:18px; }
+.cta .line{ margin-top:34px; font-size:34px; line-height:1.4; color:var(--paper); max-width:80%; margin:34px auto 0; opacity:.95; }
+.cta .handle{ position:absolute; bottom:70px; left:0; right:0; text-align:center; font-family:var(--font-hand); font-size:34px; color:var(--fill); }
+
+/* ---------------------------------------------------------------------
+   ROW STYLES (work in any theme; theme tweaks borders/shadows)
+   --------------------------------------------------------------------- */
+.row{ display:flex; align-items:center; gap:24px; padding:18px 24px; }
+.row .num{ font-family:var(--font-display); font-size:36px; color:var(--pop); width:50px; flex-shrink:0; }
+.row .icon{ width:60px; height:60px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+.row .icon img{ width:38px; height:38px; object-fit:contain; }
+.row .rtext{ flex:1; min-width:0; }
+.row .rname{ font-family:var(--font-display); font-size:30px; line-height:1.1; }
+.row .rdesc{ font-size:24px; opacity:.78; line-height:1.25; margin-top:4px; }
+/* folder-row: macOS-folder glyph instead of logo tile */
+.row.folder .icon{ background:none; }
+.row.folder .icon .fold{ width:58px; height:46px; background:linear-gradient(180deg,#8fd0e8,#5ab0d6); border-radius:6px 6px 8px 8px; position:relative; box-shadow:inset 0 -6px 0 rgba(0,0,0,.08); }
+.row.folder .icon .fold::before{ content:""; position:absolute; top:-9px; left:6px; width:22px; height:12px; background:#8fd0e8; border-radius:5px 5px 0 0; }
+/* float-row: floating product/cover image (scrapbook) */
+.row.float .thumb{ width:78px; height:100px; object-fit:cover; flex-shrink:0; }
+
+/* ---------------------------------------------------------------------
+   RECEIPTS — frame YOUR OWN post/reel screenshots as social proof
+   --------------------------------------------------------------------- */
+.receipts .grid{ display:flex; gap:30px; justify-content:center; align-items:flex-start; flex-wrap:wrap; margin-top:20px; }
+.receipt{ width:300px; }
+.receipt .ss{ width:100%; border:5px solid var(--ink); display:block; }
+.receipt .stat{ font-family:var(--font-display); font-size:34px; color:var(--pop); margin-top:14px; text-align:center; }
+.receipt .cap{ font-size:22px; text-align:center; opacity:.8; margin-top:4px; }
+
+/* screenshot-card slide must fit 1350px: tighter title, footnote always below browser */
+.shot{ justify-content:flex-start; }
+.shot .title{ margin-bottom:22px !important; }
+.shot .browser{ flex:0 0 auto; }
+.shot .browser .mock{ max-height:560px; overflow:hidden; }
+.shot .footnote{ margin-top:28px; font-size:30px; line-height:1.4; }
+.shot .footnote b{ font-family:var(--font-display); font-weight:400; }
+
+/* browser frame (screenshot card) */
+.browser{ overflow:hidden; }
+.browser .bar{ display:flex; align-items:center; gap:10px; padding:14px 18px; background:#e8e4dc; }
+.browser .bar .d{ width:16px; height:16px; border-radius:50%; }
+.browser .bar .d.r{ background:#ff6058; } .browser .bar .d.y{ background:#ffbd2e; } .browser .bar .d.g{ background:#28c840; }
+.browser .bar .url{ flex:1; margin-left:10px; background:var(--paper); border-radius:8px; padding:6px 14px; font-size:20px; opacity:.7; }
+.browser .shotimg{ display:block; width:100%; height:auto; }
+
+/* =====================================================================
+   THEME 1 — SCRAPPY   (the "24 things" vibe: busy, taped, screenshot-heavy)
+   ===================================================================== */
+.theme-scrappy .slide{ background:var(--paper); }
+.theme-scrappy .list,.theme-scrappy .shot,.theme-scrappy .statement.fill{ background-image:radial-gradient(circle, color-mix(in srgb, var(--accent) 50%, transparent) 2px, transparent 2.5px); background-size:24px 24px; }
+.theme-scrappy .cover .headline{ display:inline; font-family:var(--font-display); font-size:72px; line-height:1.3; color:var(--paper); text-transform:uppercase; background:var(--ink); -webkit-box-decoration-break:clone; box-decoration-break:clone; padding:6px 16px; box-shadow:10px 10px 0 0 var(--pop); }
+.theme-scrappy .cover .headline .hl{ background:var(--pop); }
+.theme-scrappy .cover .subbar{ background:var(--white); border:5px solid var(--ink); box-shadow:8px 8px 0 0 var(--ink); color:var(--ink); transform:rotate(-1deg); }
+.theme-scrappy .cover .sticker{ background:var(--fill); border:5px solid var(--ink); border-radius:50%; box-shadow:8px 8px 0 0 var(--ink); color:var(--ink); transform:rotate(-8deg); }
+.theme-scrappy .statement{ background:var(--accent); }
+.theme-scrappy .statement .eyebrow{ color:var(--fill); }
+.theme-scrappy .statement .claim,.theme-scrappy .statement .sub{ color:var(--paper); }
+.theme-scrappy .statement .claim .hl{ background:var(--pop); color:var(--paper); padding:2px 14px; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+.theme-scrappy .list .kicker,.theme-scrappy .shot .kicker{ color:var(--accent); }
+.theme-scrappy .list .title{ color:var(--ink); }
+.theme-scrappy .shot .title{ color:var(--pop); }
+.theme-scrappy .row{ background:var(--white); border:4px solid var(--ink); box-shadow:7px 7px 0 0 var(--ink); }
+.theme-scrappy .row .icon{ background:var(--paper); border:3px solid var(--ink); border-radius:14px; }
+.theme-scrappy .row .rname{ color:var(--ink); }
+.theme-scrappy .browser{ border:5px solid var(--ink); box-shadow:12px 12px 0 0 var(--ink); border-radius:14px 14px 10px 10px; background:var(--white); }
+.theme-scrappy .browser .bar{ border-bottom:4px solid var(--ink); }
+.theme-scrappy .shot .lede{ font-size:32px; line-height:1.4; color:var(--ink); margin-bottom:30px; }
+.theme-scrappy .shot .lede .hl{ background:var(--fill); padding:1px 8px; font-weight:700; }
+.theme-scrappy .cta .comment .kw{ background:var(--pop); color:var(--paper); border:4px solid var(--paper); box-shadow:8px 8px 0 0 rgba(17,17,17,.6); }
+
+/* =====================================================================
+   THEME 2 — CLEAN   (the "5 skills" vibe: structured, calm, white space)
+   ===================================================================== */
+.theme-clean .slide{ background:var(--white); padding:110px 90px; }
+.theme-clean .cover .headline{ display:inline; font-family:var(--font-display); font-size:74px; line-height:1.32; color:var(--ink); background:var(--paper); -webkit-box-decoration-break:clone; box-decoration-break:clone; padding:8px 18px; }
+.theme-clean .cover .headline .hl{ color:var(--pop); background:var(--paper); }
+.theme-clean .cover .scrim{ background:linear-gradient(180deg, rgba(250,249,246,.0) 40%, rgba(250,249,246,.0) 100%); }
+.theme-clean .cover .subbar{ background:var(--ink); color:var(--paper); border-radius:14px; }
+.theme-clean .cover .subbar .dot{ background:var(--fill); }
+.theme-clean .cover .sticker{ background:var(--pop); border-radius:50%; color:var(--paper); transform:rotate(-4deg); }
+.theme-clean .statement{ background:var(--paper); }
+.theme-clean .statement .eyebrow{ color:var(--pop); }
+.theme-clean .statement .claim{ color:var(--ink); }
+.theme-clean .statement .claim .hl{ color:var(--accent); }
+.theme-clean .statement .sub{ color:var(--ink); }
+.theme-clean .list .kicker,.theme-clean .shot .kicker{ color:var(--accent); }
+.theme-clean .list .title,.theme-clean .shot .title{ color:var(--ink); }
+.theme-clean .rows{ gap:14px; }
+.theme-clean .row{ background:var(--paper); border-radius:18px; border:none; }
+.theme-clean .row .num{ color:var(--accent); }
+.theme-clean .row .icon{ background:var(--white); border-radius:14px; box-shadow:0 4px 14px rgba(17,17,17,.08); }
+.theme-clean .row .rname{ color:var(--ink); }
+.theme-clean .browser{ border-radius:18px; box-shadow:0 18px 50px rgba(17,17,17,.16); background:var(--white); border:1px solid #eee; }
+.theme-clean .shot .lede{ font-size:32px; line-height:1.45; color:var(--ink); margin-bottom:30px; }
+.theme-clean .shot .lede .hl{ color:var(--accent); font-weight:700; }
+.theme-clean .cta .comment .kw{ background:var(--pop); color:var(--paper); border-radius:12px; }
+
+/* =====================================================================
+   THEME 3 — SCRAPBOOK  (the "books" vibe: paper, polaroids, handwritten)
+   ===================================================================== */
+.theme-scrapbook .slide{ background:var(--paper-warm); }
+.theme-scrapbook .slide::before{ content:""; position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='80' height='80' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; }
+.theme-scrapbook .cover .headline{ display:inline; font-family:var(--font-display); font-size:70px; line-height:1.3; color:var(--ink); background:var(--paper); -webkit-box-decoration-break:clone; box-decoration-break:clone; padding:8px 18px; box-shadow:6px 6px 0 0 rgba(17,17,17,.25); transform:rotate(-1.5deg); }
+.theme-scrapbook .cover .headline .hl{ color:var(--pop); }
+.theme-scrapbook .cover .subbar{ background:var(--paper); border:3px solid var(--ink); box-shadow:5px 5px 0 0 rgba(17,17,17,.3); color:var(--ink); transform:rotate(1deg); }
+.theme-scrapbook .cover .sticker{ background:var(--fill); border:4px dashed var(--ink); border-radius:50%; color:var(--ink); transform:rotate(-10deg); }
+.theme-scrapbook .statement{ background:var(--paper-warm); }
+.theme-scrapbook .statement .eyebrow{ color:var(--pop); }
+.theme-scrapbook .statement .claim{ color:var(--accent); }
+.theme-scrapbook .statement .claim .hl{ background:var(--fill); color:var(--ink); padding:2px 12px; }
+.theme-scrapbook .statement .sub{ color:var(--ink); }
+.theme-scrapbook .list .kicker,.theme-scrapbook .shot .kicker{ color:var(--pop); }
+.theme-scrapbook .list .title,.theme-scrapbook .shot .title{ color:var(--accent); }
+.theme-scrapbook .rows{ gap:24px; }
+/* scrapbook rows look like taped index cards, alternating tilt */
+.theme-scrapbook .row{ background:var(--paper); border:3px solid var(--ink); box-shadow:5px 5px 0 0 rgba(17,17,17,.3); }
+.theme-scrapbook .row:nth-child(odd){ transform:rotate(-1deg); }
+.theme-scrapbook .row:nth-child(even){ transform:rotate(1deg); }
+.theme-scrapbook .row .icon{ background:var(--white); border:2px solid var(--ink); border-radius:8px; }
+.theme-scrapbook .row .rname{ color:var(--ink); }
+.theme-scrapbook .row.float .thumb{ border:3px solid var(--ink); box-shadow:4px 4px 0 0 rgba(17,17,17,.3); }
+.theme-scrapbook .browser{ border:4px solid var(--ink); box-shadow:8px 8px 0 0 rgba(17,17,17,.3); border-radius:10px; background:var(--white); transform:rotate(-1deg); }
+.theme-scrapbook .shot .lede{ font-size:31px; line-height:1.45; color:var(--ink); margin-bottom:28px; }
+.theme-scrapbook .shot .lede .hl{ background:var(--fill); padding:1px 8px; }
+.theme-scrapbook .cta .comment .kw{ background:var(--pop); color:var(--paper); border:3px solid var(--paper); transform:rotate(-2deg); }
+.theme-scrapbook .receipt .ss{ border:4px solid var(--ink); transform:rotate(-1.5deg); box-shadow:5px 5px 0 0 rgba(17,17,17,.3); }
+.theme-scrapbook .receipt:nth-child(even) .ss{ transform:rotate(2deg); }
+
+/* =====================================================================
+   Looser-theme font helpers (set --font-round / --font-mono in brand.css):
+   rounded headline for playful themes · mono for tags/eyebrows
+   ===================================================================== */
+.round{ font-family:var(--font-round); font-weight:600; }
+/* .hand kept as alias -> mono so any leftover usage doesn't break, but never a script font */
+.hand { font-family:var(--font-mono); text-transform:uppercase; letter-spacing:1px; }
+.mono { font-family:var(--font-mono); }
+
+/* sticker scatter helper — absolutely-placed twemoji stickers */
+.stickers{ position:absolute; inset:0; pointer-events:none; z-index:4; }
+.stickers img{ position:absolute; width:64px; height:64px; }
+
+/* =====================================================================
+   THEME 5 — Y2K  (maximalist scrapbook: checkerboard, TV frame, pixel stickers)
+   palette: pastel pink/cream/sage — LOOSENED branding
+   ===================================================================== */
+.theme-y2k{ --y2kpink:#f4a7c0; --y2kcream:#fdf6ec; --y2kbrown:#6b4f3a; --y2kblue:#3f5aa6; --y2kgreen:#5a8a4e; }
+.theme-y2k .slide{ background:var(--y2kcream); background-image:linear-gradient(#e7e0d2 1px, transparent 1px),linear-gradient(90deg,#e7e0d2 1px, transparent 1px); background-size:36px 36px; }
+/* checkerboard cover */
+.theme-y2k .cover{ background:repeating-conic-gradient(#1d1d1d 0% 25%, #fff 0% 50%) 0/120px 120px; }
+.theme-y2k .cover .photo{ display:none; } /* y2k cover is graphic, not photo */
+.theme-y2k .cover .scrim{ display:none; }
+.theme-y2k .cover .tv{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:760px; background:var(--y2kpink); border-radius:40px; padding:60px 56px 90px; box-shadow:0 18px 0 rgba(0,0,0,.25); }
+.theme-y2k .cover .tv .screen{ background:#fff; border:6px solid #d98aa6; border-radius:18px; padding:50px 40px; text-align:center; }
+.theme-y2k .cover .tv .screen .h{ font-family:var(--font-round); font-weight:700; font-size:64px; line-height:1.1; color:var(--y2kblue); }
+.theme-y2k .cover .tv .screen .h .hl{ color:var(--y2kgreen); display:block; }
+.theme-y2k .cover .pagepill{ background:#000; }
+.theme-y2k .cover .subbar,.theme-y2k .cover .sticker,.theme-y2k .cover .swipe{ display:none; }
+/* y2k content slides: gridded paper + brown rounded headers + scattered stickers */
+.theme-y2k .statement{ background:var(--y2kcream); }
+.theme-y2k .statement .eyebrow{ font-family:var(--font-mono); font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:26px; color:var(--y2kpink); transform:none; }
+.theme-y2k .statement .claim{ font-family:var(--font-round); font-weight:700; text-transform:none; font-size:78px; color:var(--y2kbrown); }
+.theme-y2k .statement .claim .hl{ color:var(--y2kgreen); }
+.theme-y2k .statement .sub{ color:var(--y2kbrown); }
+.theme-y2k .list .kicker,.theme-y2k .shot .kicker{ font-family:var(--font-mono); font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:26px; color:var(--y2kpink); transform:none; }
+.theme-y2k .list .title,.theme-y2k .shot .title{ font-family:var(--font-round) !important; font-weight:700; text-transform:none !important; color:var(--y2kbrown); }
+.theme-y2k .row{ background:#fff; border:3px solid var(--y2kbrown); border-radius:18px; box-shadow:4px 4px 0 0 var(--y2kpink); }
+.theme-y2k .row .num{ color:var(--y2kpink); }
+.theme-y2k .row .icon{ background:var(--y2kcream); border:2px solid var(--y2kbrown); border-radius:12px; }
+.theme-y2k .row .rname{ font-family:var(--font-round); color:var(--y2kbrown); }
+.theme-y2k .browser{ border:4px solid var(--y2kbrown); border-radius:14px; box-shadow:6px 6px 0 0 var(--y2kpink); background:#fff; }
+.theme-y2k .shot .lede{ font-size:31px; color:var(--y2kbrown); margin-bottom:26px; }
+.theme-y2k .shot .lede .hl{ background:#f7d9a0; padding:1px 8px; }
+.theme-y2k .cta{ background:repeating-conic-gradient(#1d1d1d 0% 25%, #fff 0% 50%) 0/120px 120px; }
+.theme-y2k .cta .photo{ display:none; } .theme-y2k .cta .scrim{ display:none; }
+.theme-y2k .cta .block{ background:var(--y2kpink); border-radius:30px; padding:50px 40px; left:90px; right:90px; bottom:50%; transform:translateY(50%); }
+.theme-y2k .cta .comment{ font-family:var(--font-round); text-transform:none; color:#fff; }
+.theme-y2k .cta .comment .kw{ background:var(--y2kgreen); border-radius:14px; }
+.theme-y2k .cta .line{ color:#fff; } .theme-y2k .cta .handle{ color:var(--y2kbrown); }
+
+/* =====================================================================
+   Y2K — MESSY MODIFIER  (add class="y2k-mess" alongside theme-y2k)
+   Maximalist scrapbook chaos: rows tilt different ways, box colours
+   alternate on the SAME page, bigger hard shadows, deliberate off-grid.
+   ===================================================================== */
+.theme-y2k.y2k-mess .list .rows{ gap:34px; }
+.theme-y2k.y2k-mess .row{ border-width:4px; border-radius:20px; }
+/* every row a different tilt + a different fill — mixed boxes on one page */
+.theme-y2k.y2k-mess .row:nth-child(1){ transform:rotate(-2.4deg); background:#fff;        box-shadow:7px 7px 0 0 var(--y2kpink); }
+.theme-y2k.y2k-mess .row:nth-child(2){ transform:rotate(1.8deg);  background:#ffe6f0;     box-shadow:7px 7px 0 0 var(--y2kbrown); }
+.theme-y2k.y2k-mess .row:nth-child(3){ transform:rotate(-1.2deg); background:#e8f3e2;     box-shadow:7px 7px 0 0 var(--y2kpink); }
+.theme-y2k.y2k-mess .row:nth-child(4){ transform:rotate(2.6deg);  background:var(--y2kcream); box-shadow:7px 7px 0 0 var(--y2kblue); }
+.theme-y2k.y2k-mess .row:nth-child(5){ transform:rotate(-2deg);   background:#fff;        box-shadow:7px 7px 0 0 var(--y2kgreen); }
+.theme-y2k.y2k-mess .row:nth-child(6){ transform:rotate(1.4deg);  background:#fbeede;     box-shadow:7px 7px 0 0 var(--y2kpink); }
+.theme-y2k.y2k-mess .row:nth-child(7){ transform:rotate(-1.6deg); background:#fff;        box-shadow:7px 7px 0 0 var(--y2kbrown); }
+/* icon tiles pop a little, alternate accent borders */
+.theme-y2k.y2k-mess .row .icon{ border-width:3px; box-shadow:3px 3px 0 0 rgba(107,79,58,.25); }
+/* title gets a tilt + a marker swipe so the header isn't tidy either.
+   force the round font + non-uppercase (base .list .title sets display + uppercase). */
+.theme-y2k.y2k-mess .title{ font-family:var(--font-round) !important; font-weight:700 !important; text-transform:none !important; transform:rotate(-1.5deg); display:table; background:#f7d9a0; padding:6px 18px; border-radius:12px; box-shadow:5px 5px 0 0 var(--y2kpink); }
+.theme-y2k.y2k-mess .kicker{ font-family:var(--font-mono) !important; text-transform:uppercase !important; letter-spacing:2px; transform:rotate(-3deg); display:inline-block; }
+/* sticker scatter helper for mess slides — drop class="mess-sticker" on imgs */
+.theme-y2k.y2k-mess .mess-sticker{ position:absolute; z-index:6; }
+
+/* =====================================================================
+   Y2K — WHIMSICAL DEVICE SLIDE  ("cute websites you must try" format)
+   One cute retro device per slide (assets/devices/*.png) with a real
+   website screenshot composited onto its screen, real tool logo top-left,
+   nametag below, cute 8-bit stickers scattered inside a SAFE MARGIN so
+   nothing clips the slide edge.
+   Markup:
+     <div class="slide y2k-device">  (no theme-y2k class needed; self-contained)
+       <div class="pagepill">n/N</div>
+       <div class="dlogo"><img src=".../logos/tool.png"></div>
+       <div class="dkicker">the one for X</div>
+       <div class="dtitle">Tool</div>
+       <div class="device" style="--sx:30%;--sy:18.4%;--sw:40%;--sh:39.3%;">
+         <img class="frame" src=".../devices/computer-cream.png">
+         <div class="screen"><img src=".../screenshots/tools/tool.png"></div>
+       </div>
+       <div class="dnametag">tool.com</div>
+       <img class="dsticker" src=".../stickers/y2k/cute-saturn.png" style="...">
+     </div>
+   --sx/--sy/--sw/--sh = the device's green-screen rectangle as % of the device img.
+   ===================================================================== */
+.slide.y2k-device{ position:relative; overflow:hidden; padding:0;
+  background:#fdf6ec;
+  background-image:linear-gradient(#e7e0d2 1px,transparent 1px),linear-gradient(90deg,#e7e0d2 1px,transparent 1px);
+  background-size:40px 40px; font-family:var(--font-round); }
+.y2k-device .pagepill{ position:absolute; top:60px; right:60px; z-index:7; background:#000; color:#fff;
+  font-family:var(--font-mono); font-weight:700; font-size:26px; padding:8px 18px; border-radius:30px; }
+.y2k-device .dlogo{ position:absolute; top:64px; left:70px; z-index:7; width:96px; height:96px; background:#fff;
+  border:4px solid #6b4f3a; border-radius:20px; box-shadow:5px 5px 0 0 #f4a7c0;
+  display:flex; align-items:center; justify-content:center; overflow:hidden; transform:rotate(-3deg); }
+.y2k-device .dlogo img{ width:74px; height:74px; object-fit:contain; }
+.y2k-device .dkicker{ position:absolute; top:88px; left:196px; z-index:7; font-family:var(--font-mono);
+  font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:28px; color:#f4a7c0; transform:rotate(-2deg); }
+.y2k-device .dtitle{ position:absolute; top:188px; left:70px; z-index:7; font-weight:700; font-size:80px; color:#6b4f3a;
+  background:#f7d9a0; padding:6px 22px; border-radius:14px; box-shadow:6px 6px 0 0 #f4a7c0; transform:rotate(-1.5deg); }
+/* device + composited screen */
+.y2k-device .device{ position:absolute; top:360px; left:50%; transform:translateX(-50%) rotate(-1deg); width:940px; z-index:3; }
+.y2k-device .device .frame{ width:100%; display:block; }
+.y2k-device .device .screen{ position:absolute; left:var(--sx); top:var(--sy); width:var(--sw); height:var(--sh);
+  overflow:hidden; border-radius:6px; }
+.y2k-device .device .screen img{ width:100%; height:100%; object-fit:cover; object-position:top center; }
+/* nametag */
+.y2k-device .dnametag{ position:absolute; bottom:130px; left:50%; transform:translateX(-50%) rotate(-1.5deg); z-index:7;
+  background:#a18bdb; color:#fff; font-weight:700; font-size:50px; padding:14px 40px; border-radius:20px;
+  box-shadow:6px 6px 0 0 #6b4f3a; border:4px solid #6b4f3a; }
+/* stickers — keep within a safe margin (min 24px from any edge) so none clip */
+.y2k-device .dsticker{ position:absolute; z-index:6; }
+
+/* =====================================================================
+   THEME 6 — EDITORIAL  (soft paper, brown rounded headline, calm, light stickers)
+   ===================================================================== */
+.theme-editorial{ --edpaper:#fbf7ef; --edbrown:#6b4f3a; --edsoft:#9a8a76; }
+.theme-editorial .slide{ background:var(--edpaper); background-image:linear-gradient(#ece4d6 1px, transparent 1px),linear-gradient(90deg,#ece4d6 1px, transparent 1px); background-size:40px 40px; padding:110px 90px; }
+.theme-editorial .cover .photo{ filter:none; }
+.theme-editorial .cover .headline-wrap{ top:130px; right:130px; }
+.theme-editorial .cover .scrim{ background:linear-gradient(180deg, rgba(251,247,239,.0) 30%, rgba(251,247,239,.0) 100%); }
+.theme-editorial .cover .headline{ font-family:var(--font-round); font-weight:700; font-size:72px; line-height:1.12; color:var(--edbrown); background:rgba(251,247,239,.85); padding:10px 20px; -webkit-box-decoration-break:clone; box-decoration-break:clone; border-radius:8px; }
+.theme-editorial .cover .headline .hl{ color:#c98a6a; }
+.theme-editorial .cover .subbar{ background:var(--edbrown); color:var(--edpaper); border-radius:14px; }
+.theme-editorial .cover .subbar .dot{ background:#c98a6a; }
+.theme-editorial .cover .sticker{ background:#f3d9c2; border-radius:50%; color:var(--edbrown); transform:rotate(-6deg); }
+.theme-editorial .statement{ background:var(--edpaper); }
+.theme-editorial .statement .eyebrow{ font-family:var(--font-mono); font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:26px; color:#c98a6a; transform:none; }
+.theme-editorial .statement .claim{ font-family:var(--font-round); font-weight:700; text-transform:none; font-size:76px; color:var(--edbrown); }
+.theme-editorial .statement .claim .hl{ color:#c98a6a; }
+.theme-editorial .statement .sub{ color:var(--edbrown); }
+.theme-editorial .list .kicker,.theme-editorial .shot .kicker{ font-family:var(--font-mono); font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:26px; color:#c98a6a; transform:none; }
+.theme-editorial .list .title,.theme-editorial .shot .title{ font-family:var(--font-round); font-weight:700; text-transform:none; color:var(--edbrown); }
+.theme-editorial .rows{ gap:14px; }
+.theme-editorial .row{ background:#fff; border:none; border-radius:16px; box-shadow:0 4px 16px rgba(107,79,58,.08); }
+.theme-editorial .row .num{ color:#c98a6a; }
+.theme-editorial .row .icon{ background:var(--edpaper); border-radius:12px; }
+.theme-editorial .row .rname{ font-family:var(--font-round); color:var(--edbrown); }
+.theme-editorial .browser{ border-radius:18px; box-shadow:0 14px 40px rgba(107,79,58,.14); background:#fff; border:1px solid #efe7d9; }
+.theme-editorial .shot .lede{ font-size:31px; color:var(--edbrown); margin-bottom:26px; }
+.theme-editorial .shot .lede .hl{ background:#f3d9c2; padding:1px 8px; }
+/* editorial CTA — calm + cohesive: round font only, brown/terracotta, keyword on its OWN line so it never clips */
+.theme-editorial .cta .scrim{ background:linear-gradient(180deg, rgba(107,79,58,.25) 0%, rgba(107,79,58,.5) 55%, rgba(107,79,58,.82) 100%); }
+.theme-editorial .cta .comment{ display:flex; flex-direction:column; align-items:center; gap:14px; font-family:var(--font-round); font-weight:700; text-transform:none; font-size:56px; line-height:1; }
+.theme-editorial .cta .comment .word{ color:#fbf7ef; }
+.theme-editorial .cta .comment .kw{ margin-left:0; background:#c98a6a; color:#fff; border-radius:16px; padding:10px 30px; max-width:90%; }
+.theme-editorial .cta .line{ font-family:var(--font-body); color:#fbf7ef; }
+.theme-editorial .cta .handle{ font-family:var(--font-mono); font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:26px; color:#f3d9c2; }
+
+/* =====================================================================
+   THEME 6b — BRAND-EDITORIAL  (editorial layout, warmed to YOUR palette)
+   Same calm editorial bones, but on your brand.css colours instead of
+   brown/terracotta. Add BOTH classes: class="theme-editorial theme-brand"
+   ===================================================================== */
+.theme-brand.theme-editorial{ --edbrown:var(--ink); }            /* headings/body -> ink */
+/* heading font -> body-bold, to MATCH the cover top-card headline (uniform across all slides) */
+.theme-brand .cover .headline,.theme-brand .statement .claim,.theme-brand .list .title,.theme-brand .shot .title{ font-family:var(--font-body) !important; font-weight:700 !important; font-style:normal !important; text-transform:none; letter-spacing:-1.5px; }
+/* cover headline: ONE clean solid block (NOT per-line staircased strips).
+   Override box-decoration-break:clone from base editorial -> single background container. */
+.theme-brand .cover .headline-wrap{ top:100px; left:70px; right:120px; }
+.theme-brand.theme-editorial .cover:not(.hl-cover) .headline{ display:block !important; -webkit-box-decoration-break:slice !important; box-decoration-break:slice !important;
+  font-size:84px !important; line-height:1.14 !important; background:var(--paper) !important; padding:30px 34px !important;
+  border-radius:14px; box-shadow:0 10px 30px rgba(17,17,17,.22); }
+/* bigger subbar + save sticker so they don't look tiny next to the big headline */
+.theme-brand.theme-editorial .cover .subbar{ font-size:36px !important; padding:26px 32px !important; bottom:250px; }
+.theme-brand.theme-editorial .cover .sticker{ width:170px !important; height:170px !important; font-size:30px !important; bottom:100px; }
+.theme-brand .cover .headline,.theme-brand .statement .claim,.theme-brand .list .title,.theme-brand .shot .title,.theme-brand .row .rname,.theme-brand .shot .lede{ color:var(--ink); }
+.theme-brand .cover .headline .hl,.theme-brand .statement .claim .hl,.theme-brand .statement .eyebrow,.theme-brand .list .kicker,.theme-brand .shot .kicker,.theme-brand .row .num{ color:var(--pop); }
+.theme-brand .cover .subbar{ background:var(--ink); color:var(--paper); } .theme-brand .cover .subbar .dot{ background:var(--pop); }
+.theme-brand .cover .sticker{ background:var(--fill); color:var(--ink); }
+.theme-brand .shot .lede .hl{ background:var(--fill); }
+.theme-brand .cta .scrim{ background:linear-gradient(180deg, rgba(17,17,17,.25) 0%, rgba(17,17,17,.5) 55%, rgba(17,17,17,.82) 100%); }
+.theme-brand .cta .comment .kw{ background:var(--pop); }
+.theme-brand .cta .handle{ color:var(--fill); }
+
+/* =====================================================================
+   THEME 7 — PHOTO  (full-bleed real photo + clean white text card)
+   stays on your brand colours (accent = --pop)
+   ===================================================================== */
+.theme-photo .slide{ background:var(--ink); }
+.theme-photo .photo-bg{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.theme-photo .veil{ position:absolute; inset:0; background:rgba(17,17,17,.12); }
+.theme-photo .cover .headline{ font-family:var(--font-display); font-size:70px; line-height:1.28; color:var(--ink); background:#fff; padding:8px 18px; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+.theme-photo .cover .headline .hl{ color:var(--pop); }
+.theme-photo .cover .subbar{ background:#fff; color:var(--ink); border-radius:12px; }
+.theme-photo .cover .sticker{ background:var(--pop); border-radius:50%; color:#fff; }
+/* photo content slide: photo bg + a clean white card holding the point */
+.theme-photo .statement{ justify-content:flex-start; padding:0; }
+.theme-photo .statement .card{ position:absolute; left:70px; right:70px; top:50%; transform:translateY(-50%); background:#fff; border-radius:22px; padding:54px 50px; box-shadow:0 18px 50px rgba(0,0,0,.3); }
+/* position modifiers — move the card off the subject's face per-slide.
+   .card-top = card hugs the top (use when face is in the lower half).
+   .card-bottom = card hugs the bottom (use when face is in the upper half). */
+.theme-photo .statement .card.card-top{ top:50px; transform:none; }
+.theme-photo .statement .card.card-bottom{ top:auto; bottom:50px; transform:none; }
+.theme-photo .statement .card .eyebrow{ font-family:var(--font-body); font-weight:700; font-size:26px; color:var(--pop); text-transform:uppercase; letter-spacing:1px; margin-bottom:14px; transform:none; }
+.theme-photo .statement .card .claim{ font-family:var(--font-display); font-size:52px; text-transform:none; color:var(--ink); line-height:1.12; }
+.theme-photo .statement .card .sub{ margin-top:18px; font-size:30px; color:var(--ink); opacity:.85; }
+.theme-photo .cta .comment .kw{ background:var(--pop); color:#fff; border-radius:12px; }
+.theme-photo .cta .handle{ font-family:var(--font-body) !important; font-weight:700; text-transform:none; letter-spacing:.5px; font-size:32px; color:#fff; }
+
+/* ============================================================
+   SCREENSHOT FRAMES — drop any of these classes
+   on the .screenshot wrapper. Frame style can vary per theme.
+   Use .screenshot > img (your real capture / mockup).
+   ============================================================ */
+.screenshot{ position:relative; display:inline-block; max-width:100%; }
+.screenshot img{ display:block; width:100%; height:auto; }
+
+/* SOFT — soft cream card: thin border, soft drop shadow, slight tilt.
+   Understated; depth comes from the shadow, not chrome. */
+.frame-soft{ border-radius:18px; overflow:hidden; background:#fff;
+  border:1px solid rgba(17,17,17,.10);
+  box-shadow:0 24px 48px -12px rgba(17,17,17,.32), 0 8px 16px -8px rgba(17,17,17,.20);
+  transform:rotate(-1.2deg); }
+.frame-soft.flat{ transform:none; }
+.frame-soft.tilt-r{ transform:rotate(1.5deg); }
+
+/* BROWSER — mac chrome, heavier. Reuses existing .browser bar markup. */
+.frame-browser{ border-radius:14px; overflow:hidden; background:#fff;
+  box-shadow:0 28px 50px -14px rgba(17,17,17,.40); border:1px solid rgba(17,17,17,.12); }
+.frame-browser .bar{ display:flex; align-items:center; gap:10px; padding:14px 18px; background:#e8e4dc; }
+.frame-browser .bar .d{ width:14px; height:14px; border-radius:50%; }
+.frame-browser .bar .d.r{ background:#ff6058; } .frame-browser .bar .d.y{ background:#ffbd2e; } .frame-browser .bar .d.g{ background:#28c840; }
+.frame-browser .bar .url{ flex:1; margin-left:10px; background:var(--paper); border-radius:8px; padding:6px 14px; font-size:20px; opacity:.6; }
+
+/* POLAROID — taped photo. White border-bottom-heavy, tilt, tape on top. */
+.frame-polaroid{ background:#fff; padding:16px 16px 56px 16px; border-radius:4px;
+  box-shadow:0 22px 44px -14px rgba(17,17,17,.40); transform:rotate(-2.2deg); position:relative; }
+.frame-polaroid img{ border-radius:2px; }
+.frame-polaroid::before{ content:""; position:absolute; top:-16px; left:50%; transform:translateX(-50%) rotate(-3deg);
+  width:140px; height:40px; background:color-mix(in srgb, var(--pop) 42%, transparent); border:1px dashed rgba(255,255,255,.5); }
+.frame-polaroid .cap{ position:absolute; left:0; right:0; bottom:16px; text-align:center;
+  font-family:var(--font-hand); font-size:26px; color:var(--ink); }
+
+/* a soft cream surface to sit a framed shot on (texture + depth) */
+.shot.surface-cream{ background:#f3efe6; }
+
+/* =====================================================================
+   THEME 8 — ZINE  (vintage-scrapbook / zine look)
+   Aged cream paper, serif italic headline, olive/pink/tan rounded
+   info-boxes, doodle arrows, channel label + page circle, collaged
+   real-screenshot "examples!". Warm retro palette.
+   Fonts: --font-serif (headline) + --font-body + --font-mono (labels)
+   ===================================================================== */
+.theme-zine{ --zpaper:#efe7d5; --zink:#3a3327; --zolive:#7d7a3e; --zpink:#d98a86; --ztan:#cdb892; --zbox:#8a8a46; }
+.theme-zine .slide{ background:var(--zpaper);
+  background-image:radial-gradient(rgba(120,100,70,.07) 1px, transparent 1px);
+  background-size:7px 7px; padding:80px 70px; }
+/* aged top-corner label + page circle */
+.theme-zine .toplabel{ position:absolute; top:46px; left:70px; font-family:var(--font-mono); font-weight:700; text-transform:uppercase; letter-spacing:2px; font-size:22px; color:var(--zolive); }
+.theme-zine .pagecircle{ position:absolute; top:40px; right:70px; width:64px; height:64px; border-radius:50%; background:var(--ztan); color:var(--zink); display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-weight:700; font-size:24px; }
+/* serif italic headline */
+.theme-zine .ztitle{ font-family:var(--font-serif); font-style:italic; font-size:96px; line-height:1; color:var(--zink); margin:86px 0 10px; }
+.theme-zine .zsub{ font-family:var(--font-mono); text-transform:uppercase; letter-spacing:1px; font-size:22px; color:var(--zolive); max-width:78%; line-height:1.5; }
+/* coloured rounded info boxes */
+.theme-zine .zbox{ border-radius:22px; padding:26px 30px; margin-top:24px; color:#fff; }
+.theme-zine .zbox.olive{ background:var(--zbox); } .theme-zine .zbox.pink{ background:var(--zpink); } .theme-zine .zbox.tan{ background:var(--ztan); color:var(--zink); }
+.theme-zine .zbox .bt{ font-family:var(--font-mono); font-weight:700; text-transform:uppercase; letter-spacing:1px; font-size:24px; margin-bottom:10px; display:block; }
+.theme-zine .zbox ul{ margin:0; padding-left:24px; } .theme-zine .zbox li{ font-size:26px; line-height:1.5; margin:4px 0; }
+.theme-zine .zcols{ display:flex; gap:24px; } .theme-zine .zcols .zbox{ flex:1; }
+/* handwritten-feel "examples!" cue uses marker, + doodle arrow */
+.theme-zine .zcue{ font-family:var(--font-hand); font-size:40px; color:var(--zpink); margin-top:30px; }
+/* collaged screenshot row */
+.theme-zine .zgrid{ display:flex; gap:16px; margin-top:16px; }
+.theme-zine .zgrid .zthumb{ flex:1; border:3px solid #fff; box-shadow:0 6px 16px rgba(58,51,39,.25); transform:rotate(-1.5deg); overflow:hidden; border-radius:4px; }
+.theme-zine .zgrid .zthumb:nth-child(even){ transform:rotate(2deg); }
+.theme-zine .zgrid .zthumb img{ width:100%; height:160px; object-fit:cover; display:block; }
+/* zine reuses .shot frames + doodles freely. CTA: olive box, serif. */
+.theme-zine .cta .scrim{ background:linear-gradient(180deg, rgba(58,51,39,.2) 0%, rgba(58,51,39,.5) 55%, rgba(58,51,39,.82) 100%); }
+.theme-zine .cta .comment{ display:flex; flex-direction:column; align-items:center; gap:14px; font-family:var(--font-serif); font-style:italic; text-transform:none; font-size:60px; }
+.theme-zine .cta .comment .word{ color:var(--zpaper); }
+.theme-zine .cta .comment .kw{ margin-left:0; background:var(--zbox); color:#fff; border-radius:14px; padding:8px 28px; font-style:normal; font-family:var(--font-mono); font-weight:700; }
+.theme-zine .cta .line{ font-family:var(--font-body); color:var(--zpaper); }
+.theme-zine .cta .handle{ font-family:var(--font-mono); text-transform:uppercase; letter-spacing:2px; font-size:24px; color:var(--ztan); }
+
+/* =====================================================================
+   HIGHLIGHTER SWIPE — marker-pen bar behind words ("PICK THIS IF" look)
+   Wrap words in <span class="hi"> (pop) or <span class="hi mint"> (fill).
+   Text sits on the photo over a soft scrim; key words get the swipe.
+   ===================================================================== */
+.cover.hl-cover .headline-wrap{ top:120px; left:70px; right:90px; }
+.cover.hl-cover .scrim{ background:linear-gradient(180deg, rgba(17,17,17,.32) 0%, rgba(17,17,17,.05) 38%, rgba(17,17,17,.0) 55%, rgba(17,17,17,.5) 100%); }
+.theme-brand.theme-editorial .hl-cover .headline,.hl-cover .headline{ display:inline !important; background:none !important; box-shadow:none !important; padding:0 !important; border-radius:0 !important;
+  color:#fff !important; text-shadow:0 2px 14px rgba(17,17,17,.55); }
+/* the highlighter bar — sits BEHIND the text, slightly taller than the caps, rough-ish ends */
+.hi{ position:relative; display:inline; padding:2px 6px; color:var(--ink); text-shadow:none;
+  background:var(--pop); box-decoration-break:clone; -webkit-box-decoration-break:clone;
+  border-radius:4px 10px 6px 12px; box-shadow:2px 2px 0 rgba(17,17,17,.12); }
+.hi.mint{ background:var(--fill); }
+.hi.cream{ background:var(--paper); }
+/* sans vs serif headline variants */
+.hl-sans .headline{ font-family:var(--font-body) !important; font-weight:700 !important; font-style:normal !important; font-size:80px !important; line-height:1.28 !important; letter-spacing:-1px; text-transform:none !important; }
+.hl-serif .headline{ font-family:var(--font-serif) !important; font-weight:400 !important; font-style:normal !important; font-size:84px !important; line-height:1.3 !important; text-transform:none !important; }
+
+/* =====================================================================
+   COVER STYLE — "MID CARD" (white rounded card + sub-line + cursor)
+   Headline in a white card over the photo, an underlined/highlighted
+   sub-line beneath, a pixel cursor pointing at it, a sticker accent.
+   Add class="cover mcard" + use .mh / .msub / arrow img.
+   ===================================================================== */
+.cover.mcard .scrim{ background:linear-gradient(180deg, rgba(17,17,17,.18) 0%, rgba(17,17,17,.04) 40%, rgba(17,17,17,.45) 100%); }
+.cover.mcard .card{ position:absolute; left:70px; right:120px; top:46%; transform:translateY(-50%);
+  background:var(--paper); border-radius:26px; padding:44px 46px; box-shadow:0 18px 44px rgba(17,17,17,.30); }
+.mcard .card .mh{ font-family:var(--font-body); font-weight:700; font-size:62px; line-height:1.12; color:var(--ink); letter-spacing:-1px; }
+/* sub-line: highlighter swipe (coral) OR underline */
+.mcard .card .msub{ display:inline-block; margin-top:18px; font-family:var(--font-body); font-weight:700; font-size:46px; line-height:1.2; color:var(--ink); }
+.mcard .card .msub.hl{ background:var(--pop); padding:2px 10px; border-radius:5px 11px 6px 12px; }
+.mcard .card .msub.underline{ background:linear-gradient(transparent 62%, var(--fill) 62% 92%, transparent 92%); padding:0 4px; }
+/* pixel cursor pointing at the sub-line */
+.mcard .cursor{ position:absolute; width:96px; z-index:5; }
+/* sticker accent (doodle) top-left of card */
+.mcard .accent{ position:absolute; width:96px; z-index:5; }
+
+/* =====================================================================
+   COVER STYLE — "TOP CARD"
+   Big bold BLACK sans headline in a white rounded card pinned to the TOP,
+   edge-to-edge. A sub-line sits LOWER on the photo with an underline
+   swipe. A holo/8-bit sprite floats near the card. Photo fills the frame.
+   Markup: <div class="slide cover tcard"> photo + scrim
+            <div class="topcard"><div class="th">HEADLINE</div></div>
+            <div class="tsub underline">sub-line</div>
+            + sprite imgs (.accent / .cursor)
+   ===================================================================== */
+.cover.tcard .scrim{ background:linear-gradient(180deg, rgba(17,17,17,.20) 0%, rgba(17,17,17,.0) 30%, rgba(17,17,17,.0) 58%, rgba(17,17,17,.62) 100%); }
+/* the white header card holds headline + the solid sub-line pill, as one stacked unit */
+.cover.tcard .topcard{ position:absolute; top:60px; left:48px; right:48px; z-index:4;
+  background:var(--paper); border-radius:30px; padding:40px 44px 40px; box-shadow:0 16px 40px rgba(17,17,17,.30); }
+.tcard .topcard .th{ font-family:var(--font-body); font-weight:700; font-size:84px; line-height:1.02;
+  letter-spacing:-2px; color:#141414; text-transform:none; }
+/* SOLID filled pill sub-line — bright, POPS, white text.
+   Sits just under the headline inside the card. Default --pop; .mint / .ink variants. */
+.tcard .topcard .tsub{ display:inline-flex; align-items:center; gap:14px; margin-top:26px;
+  background:var(--pop); color:#fff; font-family:var(--font-body); font-weight:700; font-size:42px;
+  line-height:1.1; padding:14px 26px; border-radius:16px; box-shadow:0 6px 16px color-mix(in srgb, var(--pop) 35%, transparent); }
+.tcard .topcard .tsub.mint{ background:#2bb183; box-shadow:0 6px 16px rgba(43,177,131,.35); }
+.tcard .topcard .tsub.ink{ background:var(--ink); box-shadow:0 6px 16px rgba(17,17,17,.35); }
+.tcard .topcard .tsub .chev{ font-size:34px; opacity:.9; }
+/* sprite stuck to the CARD CORNER (half on / half off), like the ref */
+.tcard .accent{ position:absolute; width:150px; z-index:6; }
+.tcard .cursor{ position:absolute; width:96px; z-index:6; }

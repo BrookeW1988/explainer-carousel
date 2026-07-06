@@ -1,0 +1,100 @@
+/* =====================================================================
+   SCRAPBOOK-COLLAGE — for the explainer-carousel skill
+   Gridded notebook paper + spiral edge + chunky serif names + coloured info
+   boxes + typewriter chips + flat cutout screenshot cards + scattered objects.
+   Self-contained: add class="slide collage" (1080x1350 each).
+
+   Colours + fonts come from ../brand.css. The collage-local variables
+   below are DERIVED from your brand kit — retint them if you want the
+   collage look on a different sub-palette to the rest of your feed.
+   ===================================================================== */
+@import url("../brand.css");
+
+.collage{
+  /* collage sub-palette, derived from brand.css */
+  --cpaper:#faf8f2; --grid:#e4ddd0;
+  --olive:var(--accent); --olive-dk:color-mix(in srgb, var(--accent) 78%, black);
+  --cream-box:color-mix(in srgb, var(--accent) 10%, white); --tan:var(--fill);
+  --rule:#c7d3cb;
+}
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+.collage{ position:relative; width:1080px; height:1350px; overflow:hidden;
+  background:var(--cpaper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:42px 42px;
+  font-family:var(--font-grotesque); color:var(--ink); }
+
+/* spiral binding down the left edge */
+.collage .spiral{ position:absolute; top:0; left:0; width:64px; height:100%; z-index:8;
+  background:rgba(247,244,236,.5); }
+.collage .spiral i{ position:absolute; left:18px; width:30px; height:14px; border-radius:14px;
+  border:3px solid #b9ad93; background:#fbf9f2; box-shadow:inset 0 2px 0 rgba(0,0,0,.08); }
+
+/* top tab strip (the "TYPE #1" + marker objects row) */
+.collage .tab{ position:absolute; top:34px; left:96px; right:46px; z-index:7;
+  display:flex; align-items:center; gap:16px;
+  font-family:var(--font-mono); font-weight:700; text-transform:uppercase;
+  letter-spacing:2px; font-size:24px; color:#9a8f78; }
+.collage .pagepill{ position:absolute; top:30px; right:40px; z-index:9; background:#5c544a; color:#fff;
+  font-family:var(--font-mono); font-weight:700; font-size:24px; padding:7px 16px; border-radius:30px; }
+
+/* big display tool/title name */
+.collage .name{ position:absolute; left:96px; right:60px; z-index:6;
+  font-family:var(--font-grotesque); font-weight:600; font-size:120px; line-height:.92;
+  color:var(--ink); letter-spacing:-2px; }
+.collage .name.serif-italic{ font-family:var(--font-serif); font-style:italic; font-weight:400; }
+.collage .tagline{ position:absolute; left:100px; right:90px; z-index:6;
+  font-family:var(--font-mono); font-weight:700; text-transform:uppercase;
+  letter-spacing:1px; font-size:24px; line-height:1.35; color:var(--ink); }
+
+/* coloured info boxes */
+.collage .box{ position:absolute; z-index:6; border-radius:22px; padding:30px 32px; }
+.collage .box .bh{ font-family:var(--font-mono); font-weight:700; text-transform:uppercase;
+  letter-spacing:2px; font-size:30px; margin-bottom:14px; }
+.collage .box ul{ list-style:none; } .collage .box li{ position:relative; padding-left:30px;
+  font-size:29px; line-height:1.32; margin-bottom:12px; }
+.collage .box li::before{ content:'•'; position:absolute; left:6px; font-weight:700; }
+.collage .box p{ font-size:29px; line-height:1.34; }
+/* accent "use it for / pick this if" */
+.collage .box.olive{ background:var(--olive); color:#fdfbe9; }
+.collage .box.olive .bh{ color:#fff; }
+/* outlined "watch out / note" */
+.collage .box.outline{ background:transparent; border:3px solid var(--rule); color:var(--ink); }
+.collage .box.outline .bh{ color:var(--ink); }
+/* soft cream "tips / how I use it" */
+.collage .box.cream{ background:var(--cream-box); color:var(--ink); }
+.collage .box.cream .bh{ color:var(--olive-dk); font-family:var(--font-grotesque); font-style:italic; text-transform:none; letter-spacing:0; font-size:38px; }
+
+/* typewriter fill-in chips ("content formats") */
+.collage .chip{ display:block; background:#4a3b30; color:#efe3d3; font-family:var(--font-mono);
+  font-weight:700; font-size:26px; padding:12px 18px; border-radius:8px; margin-bottom:14px; }
+
+/* flat cutout screenshot card (the "examples!" manila look) */
+.collage .card{ position:absolute; z-index:5; background:#fff; padding:10px;
+  box-shadow:0 14px 30px rgba(58,48,39,.28); border:1px solid rgba(58,48,39,.08); }
+.collage .card img{ display:block; width:100%; height:auto; }
+.collage .card.tilt-l{ transform:rotate(-3deg); } .collage .card.tilt-r{ transform:rotate(2.5deg); }
+.collage .card .cap{ font-family:var(--font-mono); font-size:20px; padding:8px 4px 2px; color:#8a7d66; }
+
+/* handwriting accent for little notes/arrows labels */
+.collage .hand{ position:absolute; z-index:6; font-family:var(--font-hand); font-weight:700;
+  font-size:42px; color:var(--ink); }
+
+/* scattered cutout objects + stickers (PNG cutouts on transparent) */
+.collage .obj{ position:absolute; z-index:7; }
+.collage .obj .lbl{ position:absolute; left:50%; transform:translateX(-50%); bottom:-30px;
+  white-space:nowrap; font-family:var(--font-mono); font-weight:700; text-transform:uppercase;
+  letter-spacing:1px; font-size:18px; color:#8a7d66; }
+
+/* logo chip (real tool logo in a little rounded tile) */
+.collage .logochip{ position:absolute; z-index:7; width:96px; height:96px; background:#fff;
+  border-radius:20px; box-shadow:0 8px 18px rgba(58,48,39,.22); display:flex; align-items:center;
+  justify-content:center; overflow:hidden; }
+.collage .logochip img{ width:72px; height:72px; object-fit:contain; }
+
+/* url under name */
+.collage .url{ position:absolute; z-index:6; font-family:var(--font-mono); font-weight:700;
+  font-size:30px; color:var(--pop); }
